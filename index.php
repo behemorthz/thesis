@@ -37,24 +37,13 @@ for($k=0;$k<$j;$k++){
   }
 }
 
-// echo '<pre>';
-// print_r($que);
-// echo  '</pre>';
-// echo '<pre>';
-// print_r($proc);
-// echo  '</pre>';
-// echo '<br>';
-
 while(!($que ->isEmpty())){
   $que ->rewind();
   $oper=$que ->current();
-  // print($oper);
   $que ->dequeue();
   if(preg_match('/run/',$oper)){
     array_push($answer,$oper);
     $nproc = cutprocname($oper);
-    // echo '<p>nproc</p>';
-    // print($nproc);
     getProc($nproc);
   }
   else{
@@ -87,14 +76,8 @@ function getProc($nproc){
     }
   }
 }
-// echo '<pre>';
-// print_r($answer);
-// echo  '</pre>';
-
 function genxml($answer){
   $j=count($answer);
-  // echo "<h1>answer</h1>";
-  // print($j);
   $text = '<basecode>';
 
   for($i=0;$i<$j;$i++){
@@ -102,17 +85,17 @@ function genxml($answer){
       if(preg_match('/if/', $answer[$i]))
       {
           $text .= "<if>";
-          $text .= "<line>";
+          $text .= "<line id=";
           $text .= $i+1;
-          $text .= "</line>";
+          $text .= " trace=false />";
           $text .= "<code>";
           $text .= htmlspecialchars($answer[$i]);
           $text .= "</code>";
       }
       else if(preg_match('/fi/', $answer[$i])){
-          $text .= "<line>";
+          $text .= "<line id=";
           $text .= $i+1;
-          $text .= "</line>";
+          $text .= " trace=false />";
           $text .= "<code>";
           $text .= htmlspecialchars($answer[$i]);
           $text .= "</code>";
@@ -121,18 +104,18 @@ function genxml($answer){
       if(preg_match('/^do/', $answer[$i]))
       {
           $text .= "<do>";
-          $text .= "<line>";
+          $text .= "<line id=";
           $text .= $i+1;
-          $text .= "</line>";
+          $text .= " trace=false />";
           $text .= "<code>";
           $text .= htmlspecialchars($answer[$i]);
           $text .= "</code>";
       }
       else if(preg_match('/^od/', $answer[$i])){
-          $text .= "<line>";
-          $text .= $i+1;
-          $text .= "</line>";
-          $text .= "<code>";
+        $text .= "<line id=";
+        $text .= $i+1;
+        $text .= " trace=false />";
+      $text .= "<code>";
           $text .= htmlspecialchars($answer[$i]);
           $text .= "</code>";
           $text .= "</do>";
@@ -140,9 +123,9 @@ function genxml($answer){
       else
       {
           $text .= "<con>";
-          $text .= "<line>";
+          $text .= "<line id=";
           $text .= $i+1;
-          $text .= "</line>";
+          $text .= " trace=false />";
           $text .= "<code>";
           $text .= htmlspecialchars($answer[$i]);
           $text .= "</code>";
